@@ -1,0 +1,236 @@
+[
+  {
+    "claim_id": "CLM-1041",
+    "policy_id": "POL-A-88421",
+    "claim_type": "auto",
+    "region": "CA",
+    "status": "open",
+    "claimant": "Marcus Reyes",
+    "incident_date": "2026-09-12",
+    "reported_date": "2026-09-13",
+    "claimed_amount": 8420.0,
+    "channel": "phone",
+    "verbatim": "I was driving home on the 101 around 6pm and this guy just clipped my rear driver side and kept going. I got his plate though, it's on the police report. My tail light is shattered and the bumper's hanging off. I took photos at the scene. The tow truck driver was really helpful, his name was Dave. I just want my car fixed, I need it for work."
+  },
+  {
+    "claim_id": "CLM-1042",
+    "policy_id": "POL-A-88421",
+    "claim_type": "auto",
+    "region": "CA",
+    "status": "open",
+    "claimant": "Marcus Reyes",
+    "incident_date": "2026-09-20",
+    "reported_date": "2026-09-20",
+    "claimed_amount": 125000.0,
+    "channel": "phone",
+    "verbatim": "My car was stolen from the driveway overnight. I noticed it gone around 7am. I have not filed a police report yet because I am travelling for work and cannot get to the station. I need the payout this week as I have already arranged to buy a replacement vehicle from my cousin's dealership and he is holding it for me. The car had about 40,000 miles on it, everything was perfect, new tires, recently detailed. I can send photos my wife took last month."
+  },
+  {
+    "claim_id": "CLM-1043",
+    "policy_id": "POL-H-21093",
+    "claim_type": "home",
+    "region": "TX",
+    "status": "under_review",
+    "claimant": "Priya Nair",
+    "incident_date": "2026-08-30",
+    "reported_date": "2026-09-18",
+    "claimed_amount": 47800.0,
+    "channel": "web",
+    "verbatim": "Water damage from the storm on August 30th, flooded the whole ground floor. The adjuster who came out said it looked like the damage was mostly from the foundation settling, not the storm, but that was a friend of a friend who does construction, not an official person. I have already paid the remediation company cash, no receipts. My neighbour saw the water, she can confirm. Everything in the living room is destroyed, the TV, the couch, my late mother's piano. I want the full amount, it is all worth that."
+  },
+  {
+    "claim_id": "CLM-1044",
+    "policy_id": "POL-H-21093",
+    "claim_type": "home",
+    "region": "TX",
+    "status": "under_review",
+    "claimant": "Priya Nair",
+    "incident_date": "2026-09-15",
+    "reported_date": "2026-09-15",
+    "claimed_amount": 2300.0,
+    "channel": "web",
+    "verbatim": "A tree limb came through the kitchen window during Tuesday's storm. Glass everywhere and water damaged the counter and floor. I have photos from right after it happened and the tree service invoice. Window guy is coming Thursday. Just need help with the deductible question, everything else is straightforward."
+  },
+  {
+    "claim_id": "CLM-1045",
+    "policy_id": "POL-HL-55610",
+    "claim_type": "health",
+    "region": "NY",
+    "status": "open",
+    "claimant": "Devon Clarke",
+    "incident_date": "2026-09-01",
+    "reported_date": "2026-09-02",
+    "claimed_amount": 1860.0,
+    "channel": "provider",
+    "verbatim": "Claim submitted by Mount Sinai for outpatient MRI of the left knee on September 1st, 2026. Procedure code and provider NPI on the attached form. Patient presented with meniscus tear documented in the referring physician's note. Authorization was obtained prior to the service. Standard facility fee and radiology read included."
+  },
+  {
+    "claim_id": "CLM-1046",
+    "policy_id": "POL-HL-55610",
+    "claim_type": "health",
+    "region": "NY",
+    "status": "open",
+    "claimant": "Devon Clarke",
+    "incident_date": "2026-09-10",
+    "reported_date": "2026-09-10",
+    "claimed_amount": 38200.0,
+    "channel": "provider",
+    "verbatim": "Inpatient admission September 10th, discharge September 14th. Chief complaint listed as chronic back pain, however the operative note describes a complex spinal fusion with instrumentation at three levels. No prior conservative treatment documented in the referral. The attending physician listed on the discharge summary does not appear in our provider network records. Patient requested itemized bill be sent to a PO box different from the address on file."
+  },
+  {
+    "claim_type": "home",
+    "region": "TX",
+    "incident_date": "2026-08-30",
+    "reported_date": "2026-09-18",
+    "claimed_amount": 47800.0,
+    "verbatim": "Storm water entered the ground floor through a broken window during heavy rain. The living room flooring, drywall, and furniture were damaged. A neighbour observed the water entering the property. The remediation company was paid in cash and no receipts were provided.",
+    "claimant": "Priya Nair",
+    "policy_id": "POL-H-*****",
+    "channel": "upload",
+    "status": "open",
+    "claim_id": "CLM-1047",
+    "source": {
+      "filename": "home-claim-intake.pdf",
+      "format": "pdf",
+      "chars": 577,
+      "uploaded_at": "2026-11-19T10:41:42+00:00"
+    }
+  },
+  {
+    "claim_type": "health",
+    "region": "NY",
+    "incident_date": "2026-10-05",
+    "reported_date": "2026-10-06",
+    "claimed_amount": 2450.0,
+    "verbatim": "Devon Clarke received outpatient physiotherapy at Mount Sinai for a documented knee injury. Prior authorization was obtained and the itemised invoice is attached.",
+    "claimant": "Devon Clarke",
+    "policy_id": null,
+    "channel": "provider",
+    "status": "open",
+    "claim_id": "CLM-1048",
+    "source": {
+      "filename": "health-claim-intake.csv",
+      "format": "csv",
+      "chars": 328,
+      "uploaded_at": "2026-11-19T10:59:13+00:00"
+    }
+  },
+  {
+    "claim_type": "health",
+    "region": "NY",
+    "incident_date": "2026-10-05",
+    "reported_date": "2026-10-06",
+    "claimed_amount": 2450.0,
+    "verbatim": "The claimant, Devon Clarke, received outpatient physiotherapy at Mount Sinai for a documented knee injury. Prior authorization was obtained and the itemised invoice is attached.",
+    "claimant": "Devon Clarke",
+    "policy_id": null,
+    "channel": "provider",
+    "status": "needs_review",
+    "duplicate_of": "CLM-1048",
+    "claim_id": "CLM-1049",
+    "source": {
+      "filename": "claims.xlsx",
+      "format": "xlsx",
+      "chars": 341,
+      "uploaded_at": "2026-11-19T10:59:16+00:00"
+    }
+  },
+  {
+    "claim_type": "home",
+    "region": "FL",
+    "incident_date": "2026-10-02",
+    "reported_date": "2026-10-03",
+    "claimed_amount": 12400.0,
+    "verbatim": "The kitchen ceiling collapsed after a burst pipe. A plumber invoice and photos are attached. There are no prior claims on the policy.",
+    "claimant": "Elena Marsh",
+    "policy_id": "POL-H-77410",
+    "channel": "upload",
+    "status": "open",
+    "claim_id": "CLM-1050",
+    "source": {
+      "filename": "scanned-claim.pdf",
+      "format": "pdf",
+      "chars": 0,
+      "uploaded_at": "2026-11-19T10:59:20+00:00"
+    }
+  },
+  {
+    "claim_type": "auto",
+    "region": "TX",
+    "incident_date": "2026-10-10",
+    "reported_date": "2026-10-11",
+    "claimed_amount": 9300.0,
+    "verbatim": "Rear-ended at a red light. Other driver exchanged insurance details. Photos of the bumper and a repair estimate are attached.",
+    "claimant": "Jordan Blake",
+    "policy_id": "POL-A-66120",
+    "channel": "null",
+    "status": "open",
+    "claim_id": "CLM-1051",
+    "source": {
+      "filename": "claim-photo.png",
+      "format": "png",
+      "chars": 0,
+      "uploaded_at": "2026-11-19T10:59:22+00:00"
+    }
+  },
+  {
+    "claim_type": "home",
+    "region": "TX",
+    "incident_date": "2026-08-30",
+    "reported_date": "2026-09-18",
+    "claimed_amount": 47800.0,
+    "verbatim": "Storm water entered the ground floor through a broken window during heavy rain. The living room flooring, drywall, and furniture were damaged. A neighbour observed the water entering the property. The remediation company was paid in cash and no receipts were provided.",
+    "claimant": "Priya Nair",
+    "policy_id": "POL-H-*****",
+    "channel": "null",
+    "status": "needs_review",
+    "duplicate_of": "CLM-1043",
+    "claim_id": "CLM-1052",
+    "source": {
+      "filename": "home-claim-intake.pdf",
+      "format": "pdf",
+      "chars": 577,
+      "uploaded_at": "2026-11-19T10:59:25+00:00"
+    }
+  },
+  {
+    "claim_type": "auto",
+    "region": "CA",
+    "incident_date": "2026-09-20",
+    "reported_date": "2026-09-20",
+    "claimed_amount": 125000.0,
+    "verbatim": "Marcus Reyes reported a stolen vehicle, a 2022 sedan, taken from his driveway overnight. The date of loss and the date reported are both 2026-09-20. He claims an amount of $125,000 and has not yet filed a police report. He needs the payout this week to buy a replacement vehicle from a cousin's dealership.",
+    "claimant": "Marcus Reyes",
+    "policy_id": "POL-A-*****",
+    "channel": "null",
+    "status": "needs_review",
+    "duplicate_of": "CLM-1042",
+    "claim_id": "CLM-1053",
+    "source": {
+      "filename": "auto-claim-intake.docx",
+      "format": "docx",
+      "chars": 342,
+      "uploaded_at": "2026-11-19T10:59:28+00:00"
+    }
+  },
+  {
+    "claim_type": "auto",
+    "region": "TX",
+    "incident_date": "2026-10-10",
+    "reported_date": "2026-10-11",
+    "claimed_amount": 9300.0,
+    "verbatim": "Rear-ended at a red light. Other driver exchanged insurance details. Photos of the bumper and a repair estimate are attached.",
+    "claimant": "Jordan Blake",
+    "policy_id": "POL-A-66120",
+    "channel": "null",
+    "status": "needs_review",
+    "duplicate_of": "CLM-1051",
+    "claim_id": "CLM-1054",
+    "source": {
+      "filename": "claim-photo.png",
+      "format": "png",
+      "chars": 0,
+      "uploaded_at": "2026-11-19T12:17:14+00:00"
+    }
+  }
+]

@@ -1,0 +1,16 @@
+.git
+.env
+.env.example
+.venv
+venv
+__pycache__
+*.pyc
+.pytest_cache
+**/node_modules
+frontend/dist
+data/case_queue.json
+data/llm_usage.jsonl
+data/runs.jsonl
+data/uploads
+docs/*.pdf
+docs/*.png
