@@ -95,13 +95,12 @@ demonstrate deduplication.
 
 - **Executed notebook:** `notebooks/insurance_claims_walkthrough.ipynb` — 24 cells covering
   data, RAG, risk, compliance, ingestion/OCR, ML, evaluation, guardrails and tests.
-- **Project guide:** `docs/Project-Guide.pdf` — setup, architecture, API, operations.
-- **Process report:** `docs/Insurance-Claims-Analytics-Process-Report.pdf` — every build step,
-  bugs found, results.
-- **Interview Q&A:** `docs/Interview-QA.pdf` — 40 project-grill questions with answers.
-- **Interview pack:** `docs/08-insurance-claims-interview-pack.pdf` — opening, whiteboard, demo.
+- **Presentation documents** — project guide, process report, interview Q&A and interview pack —
+  are kept **outside the repository** in `..\Insurance-Claims-Docs\` (see its README). They are
+  intentionally not committed.
 
-The PDF/PNG artifacts in `docs/` are **git-ignored** — they are presentation outputs, not source.
+The repo ignores `docs/*.pdf`, `docs/*.html` and `docs/*.png` so presentation artifacts can never
+be committed by accident.
 
 ## Docker
 
