@@ -48,8 +48,11 @@ services:
       - "443:443/udp"
     environment:
       DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+      # Only used by Caddyfile.both; harmless when the default Caddyfile is mounted.
+      QUENCH_DOMAIN: ${QUENCH_DOMAIN:-}
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # CADDYFILE=Caddyfile.both in .env serves both projects from one Caddy.
+      - ./${CADDYFILE:-Caddyfile}:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
     restart: unless-stopped

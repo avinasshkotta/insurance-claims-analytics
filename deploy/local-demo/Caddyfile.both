@@ -1,0 +1,42 @@
+# Both sites on one Caddy: claims app + QuenchGuard.
+# Use with:  CADDYFILE=Caddyfile.both  and  QUENCH_DOMAIN=...  in .env
+#
+# QuenchGuard runs on the host at 127.0.0.1:8002 (see its docker-compose.demo.yml).
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+	}
+
+	reverse_proxy app:8000 {
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+}
+
+{$QUENCH_DOMAIN} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+	}
+
+	# QuenchGuard has no rate limiter or spend cap, so it is password protected.
+	# The password is in deploy/local-demo/.credentials.txt (git-ignored).
+	# Change it:  docker run --rm caddy:2-alpine caddy hash-password --plaintext 'new-password'
+	#             then replace the hash below.
+	basic_auth {
+		demo $2a$14$YdcOD8ZZEisXPVRRai8sGeq9qROPGpn7DgGM3YDHffSPMHSWPTssu
+	}
+
+	reverse_proxy host.docker.internal:8002 {
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+}

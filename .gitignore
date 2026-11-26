@@ -30,3 +30,9 @@ docs/eval_report.json
 
 # Trained artifacts (regenerate with `cli ml`)
 models/
+
+# Local demo tooling, logs and runtime config
+deploy/local-demo/tools/
+deploy/local-demo/boot.log
+deploy/local-demo/.env
+deploy/local-demo/.credentials.txt

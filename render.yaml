@@ -1,0 +1,33 @@
+# Render Blueprint for the claims console.
+#
+# Dashboard -> New -> Blueprint -> select this repository.
+# Render reads this file, prompts for OPENAI_API_KEY, and builds the Dockerfile.
+#
+# Free plan: 512 MB RAM, spins down after 15 minutes idle, ~50 s cold start.
+# The app measures ~141 MB, so it fits with room to spare.
+
+services:
+  - type: web
+    name: claims-console
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # Prompted once at blueprint creation; never stored in the repository.
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: DEMO_MODE
+        value: "1"
+      - key: DEMO_RPM
+        value: "20"
+      - key: DEMO_DAILY_USD
+        value: "1.00"
+      - key: DEMO_ALLOW_UPLOADS
+        value: "0"
+      - key: MAX_OUTPUT_TOKENS
+        value: "500"
+      - key: LLM_MODEL
+        value: gpt-4o-mini

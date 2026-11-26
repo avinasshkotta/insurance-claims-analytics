@@ -22,14 +22,28 @@ if ((-not $Domain -or -not $Token) -and (Test-Path $envPath)) {
 $Domain = "$Domain".Trim()
 $Token = "$Token".Trim()
 if (-not $Domain) { throw "DOMAIN is missing. Create deploy/local-demo/.env from .env.example." }
-if (-not $Token) { throw "DUCKDNS_TOKEN is missing. Get it from duckdns.org." }
-
-$sub = $Domain -replace '\.duckdns\.org$', ''
 
 try {
     $publicIp = (Invoke-RestMethod "https://api.ipify.org?format=json" -TimeoutSec 15).ip
 } catch {
-    $publicIp = "(unknown)"
+    $publicIp = ""
+}
+
+$sub = $Domain -replace '\.duckdns\.org$', ''
+
+# No token: only acceptable if the record already points here, so a missing token
+# cannot silently leave a stale A record behind.
+if (-not $Token) {
+    $current = ""
+    try {
+        $current = (Resolve-DnsName $Domain -Type A -ErrorAction Stop |
+            Where-Object { $_.IPAddress } | Select-Object -First 1).IPAddress
+    } catch { }
+    if ($current -and $publicIp -and $current -eq $publicIp) {
+        Write-Host "DuckDNS already points at $publicIp; no token needed for this run."
+        exit 0
+    }
+    throw "DUCKDNS_TOKEN is missing and $Domain points at '$current' (public IP is '$publicIp'). Paste the token into .env."
 }
 
 $url = "https://www.duckdns.org/update?domains=$sub&token=$Token&ip="

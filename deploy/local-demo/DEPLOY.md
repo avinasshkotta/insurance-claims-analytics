@@ -98,6 +98,31 @@ Checks health, demo guards, metrics, dashboard and the uploads 403.
   and keep the repo link on the resume.
 - Rotate the OpenAI key afterwards if the URL was public for a while.
 
+## Will the link work after a reboot?
+
+A DuckDNS record is only a name. Four independent things must be true:
+
+| Dependency | Today | Fix |
+|---|---|---|
+| Docker Desktop starts when you sign in | **off** (`AutoStart = false` in `settings-store.json`) | Settings → General → *Start Docker Desktop when you sign in* |
+| Containers come back | `restart: unless-stopped` (already set) | nothing |
+| DuckDNS points at the current IP | manual | `.\install-autostart.ps1` (refreshes every 10 minutes) |
+| Ports 80/443 forwarded | router | persists across reboots |
+| Laptop is awake | — | nothing can fix this |
+
+After the scheduled tasks and the Docker setting, a reboot recovers by itself in ~1–2 minutes:
+logon → `boot.ps1` waits for Docker → refreshes DNS → `docker compose up -d` → Caddy reuses
+its stored certificate (no re-issuance).
+
+Two things it still cannot survive:
+
+- **The laptop being off.** If someone clicks at 11pm with the lid shut, they get a connection
+  error. No DNS record changes that.
+- **A public IP change while the machine was off**, for up to 10 minutes after boot until the
+  DNS task runs. Run `status.ps1` before a call and the window closes.
+
+So the URL belongs in the interview message, never in the resume header.
+
 ## Security (this is a public endpoint on your API key)
 
 Already on via `docker-compose.yml`: demo mode, 20 req/min per visitor, $1 daily cap,
@@ -110,19 +135,11 @@ Optional extra — require a password for the whole demo: generate a hash and un
 docker run --rm caddy:2-alpine caddy hash-password --plaintext "your-password"
 ```
 
-## Fallback: no port forwarding (cloudflared)
+## If the router cannot be configured
 
-If CGNAT or router access blocks you, a free Cloudflare quick tunnel gives you HTTPS
-immediately. The URL changes on restart, which is fine for a live interview.
-
-```powershell
-winget install Cloudflare.cloudflared
-docker compose up -d app          # app only, published on 127.0.0.1:8010
-cloudflared tunnel --url http://localhost:8010
-```
-
-Use the printed `https://<random>.trycloudflare.com` URL. For a stable hostname without a
-domain, `ngrok http 8010` on the free plan includes one static domain.
+Use Render instead — it needs no ports, no DNS and no router access, and it is the option this
+repository is configured for (`render.yaml`). See [`../render/DEPLOY.md`](../render/DEPLOY.md).
+A laptop-hosted demo should be treated as the interview deep-dive, not the public link.
 
 ## Troubleshooting
 
