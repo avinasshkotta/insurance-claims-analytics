@@ -112,7 +112,7 @@ python -m uvicorn claims_assistant.api:app --port 8010
 ## CLI
 
 ```powershell
-python -m pytest -q                                  # 101 tests, no key needed
+python -m pytest -q                                  # 114 tests, no key needed
 python -m claims_assistant.cli eval                  # golden-set regression gate (offline)
 python -m claims_assistant.cli eval --live           # same, against real model answers
 python -m claims_assistant.cli eval --dataset eval/hard_set.json --live
@@ -208,7 +208,7 @@ inside a different environment with `python -m claims_assistant.cli ml`.
 │   ├── prompts.py              # prompt registry (version + content digest)
 │   └── usage.py                # token/cost accounting (JSONL)
 ├── frontend/                   # React + Vite console
-└── tests/                      # 110 tests
+└── tests/                      # 114 tests
 ```
 
 ## Design notes
