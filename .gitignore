@@ -19,8 +19,12 @@ frontend/dist/
 data/case_queue.json
 data/llm_usage.jsonl
 data/runs.jsonl
-data/embeddings.json
 data/uploads/
+
+# build inputs — committed on purpose so CI/CD and PaaS builds work from a
+# clean checkout (a Dockerfile that COPYs them fails otherwise):
+#   data/embeddings.json   -> hybrid retrieval, regenerate with `cli reindex`
+#   models/*.joblib        -> severity model, regenerate with `cli ml`
 
 # presentation artifacts — guide, report, Q&A, interview pack (never commit)
 docs/*.pdf
@@ -28,8 +32,7 @@ docs/*.png
 docs/*.html
 docs/eval_report.json
 
-# Trained artifacts (regenerate with `cli ml`)
-models/
+# Trained artifacts are committed (see the build-inputs note above).
 
 # Local demo tooling, logs and runtime config
 deploy/local-demo/tools/
