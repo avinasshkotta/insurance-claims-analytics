@@ -91,6 +91,7 @@ first Actions run replaces it. That is expected. Sequence:
 
 | Symptom | Cause |
 |---|---|
+| **404 on every path**, smoke test loops `curl: (22) ... 404` | The Container App is **Stopped** (`properties.runningStatus`). Check the activity log for a `containerApps/stop/action`. Start it:<br>`SUB=$(az account show --query id -o tsv)`<br>`az rest --method post --url "https://management.azure.com/subscriptions/$SUB/resourceGroups/rg-claims-demo/providers/Microsoft.App/containerApps/claims-console/start?api-version=2024-03-01"`<br>Note: stopping is pointless — `minReplicas: 0` already costs nothing when idle. The workflow now starts a stopped app automatically. |
 | `AADSTS70021` / login fails | federated subject must be exactly `repo:OWNER/REPO:ref:refs/heads/main` |
 | `AADSTS700213` and the error shows `repo:owner@12345/repo@67890:ref:refs/heads/main` | GitHub now sends **immutable-ID subject claims**. Add a second credential using the exact subject from the error:<br>`az ad app federated-credential create --id <appId> --parameters '{"name":"github-main-immutable","issuer":"https://token.actions.githubusercontent.com","subject":"<subject from error>","audiences":["api://AzureADTokenExchange"]}'` |
 | `ErrImagePull` / `ImagePullBackOff` | GHCR package is private; make it public or add registry credentials |

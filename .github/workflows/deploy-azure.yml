@@ -64,6 +64,22 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Ensure the app is running
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            # A stopped app answers 404 on every path. Scale-to-zero is already $0,
+            # so a manual stop gains nothing and breaks the public URL.
+            STATE=$(az containerapp show --name "$CONTAINER_APP" --resource-group "$RESOURCE_GROUP" \
+              --query properties.runningStatus -o tsv)
+            echo "running status: $STATE"
+            if [ "$STATE" = "Stopped" ]; then
+              SUB=$(az account show --query id -o tsv)
+              az rest --method post \
+                --url "https://management.azure.com/subscriptions/$SUB/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.App/containerApps/$CONTAINER_APP/start?api-version=2024-03-01"
+              sleep 15
+            fi
+
       - name: Point the Container App at the new image
         uses: azure/cli@v2
         with:
