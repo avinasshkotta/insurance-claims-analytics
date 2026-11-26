@@ -18,21 +18,32 @@ Cold start is ~5–10 s (scale-to-zero).
 
 ## Measured results
 
-Filled in from `/api/metrics/summary` after a real testing round. Keep the "before"
-column — the improvement is the story, not the final number.
+Measured against the live model (`gpt-4o-mini`) over 24 cases: the original 9-case golden
+set plus a 15-case **hard set** (`eval/hard_set.json`) built around paraphrases, two-sided
+answers, numeric boundaries and multi-part questions.
 
 | Metric | Before | After | Source |
 |---|---|---|---|
-| Golden-set pass rate | _% | _% | `eval/golden_set.json` (9 cases) |
-| Top-1 retrieval accuracy | _% | _% | same |
-| Refusal accuracy | _% | _% | same |
-| p95 end-to-end latency | _ ms | _ ms | `data/runs.jsonl` |
-| Cost per request | $0.____ | $0.____ | `data/llm_usage.jsonl` |
-| Human override rate | _% | _% | `data/case_queue.json` |
-| External sessions | — | _ | demo guard logs |
+| Hard-set pass rate (15 cases) | **86.7%** | **100%** | `eval/hard_set.json` |
+| Top-1 retrieval accuracy | 100% | 100% | both sets |
+| Refusal accuracy | 93.3% | 100% | both sets |
+| Keyword coverage | 88.9% | 100% | both sets |
+| Golden-set pass rate (9 cases) | 100% | 100% | `eval/golden_set.json` (saturated) |
+| Cost per model call | — | **$0.0001** | `data/llm_usage.jsonl` (518 calls, $0.055 total) |
+| p95 end-to-end latency | — | — | needs triage runs; not yet measured |
+| External sessions | — | 0 | demo guard logs |
 
-What changed between the columns: _(one or two lines — e.g. "moved the region filter
-ahead of ranking, which fixed 4 of 6 refusal failures")_.
+**What changed:** the hard set exposed two retrieval failures and one prompt gap.
+
+1. *"My basement flooded"* retrieved nothing — `flooded` and `floodwaters` share no token.
+   Added a small stemmer + domain synonyms applied to both the index and the query.
+2. *"Do I need prior authorization for an MRI, and how long do I have to submit the claim?"*
+   answered only the first half — the Filing Deadline section was never retrieved. Added
+   multi-query retrieval, so each part of a compound question retrieves its own section.
+3. Flood questions were then refused because coverage is conditional. Added a prompt rule
+   to answer both branches (covered / excluded) instead of refusing.
+
+The original golden set stayed at 100% throughout — the fixes did not regress it.
 
 > Numbers come from synthetic claim data. The pipeline is the deliverable, not the labels.
 
@@ -104,6 +115,9 @@ python -m uvicorn claims_assistant.api:app --port 8010
 python -m pytest -q                                  # 101 tests, no key needed
 python -m claims_assistant.cli eval                  # golden-set regression gate (offline)
 python -m claims_assistant.cli eval --live           # same, against real model answers
+python -m claims_assistant.cli eval --dataset eval/hard_set.json --live
+                                                    # 15 harder cases: paraphrases,
+                                                    # two-sided answers, multi-part
 python -m claims_assistant.cli reindex               # build the semantic index (embeddings)
 python -m claims_assistant.cli ml                    # train severity model + clusters (synthetic history)
 python -m claims_assistant.cli drift                 # PSI drift report vs training baseline

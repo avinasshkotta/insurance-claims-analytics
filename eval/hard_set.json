@@ -1,0 +1,165 @@
+{
+  "_comment": "Hard set: paraphrases without shared keywords, two-sided answers, numeric boundaries, multi-part questions. Same schema as golden_set.json. Run with: python -m claims_assistant.cli eval (golden) or run_eval(golden_path=...) for this file.",
+  "thresholds": {
+    "pass_rate": 0.8,
+    "top1_accuracy": 0.85,
+    "retrieval_hit_rate": 0.9,
+    "refusal_accuracy": 1.0,
+    "keyword_coverage": 0.8
+  },
+  "cases": [
+    {
+      "id": "hi_auto_ca_hire_car_daily",
+      "query": "How much per day will you pay for a hire car while mine is being fixed?",
+      "claim_type": "auto",
+      "region": "CA",
+      "expected_doc": "POLICY-AUTO-CA",
+      "must_include": ["$50"],
+      "must_include_any": [],
+      "must_not_include": ["$35"]
+    },
+    {
+      "id": "hi_auto_tx_hire_car_daily",
+      "query": "What is the daily rate for a replacement vehicle?",
+      "claim_type": "auto",
+      "region": "TX",
+      "expected_doc": "POLICY-AUTO-TX",
+      "must_include": ["$35"],
+      "must_include_any": [],
+      "must_not_include": ["$50"]
+    },
+    {
+      "id": "hi_auto_tx_report_window",
+      "query": "How long do I have to tell you about an accident?",
+      "claim_type": "auto",
+      "region": "TX",
+      "expected_doc": "POLICY-AUTO-TX",
+      "must_include": ["180"],
+      "must_include_any": [],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_home_tx_storm_intrusion",
+      "query": "Rain came in through the roof after a windstorm. Is the water damage covered?",
+      "claim_type": "home",
+      "region": "TX",
+      "expected_doc": "POLICY-HOME-TX",
+      "must_include": [],
+      "must_include_any": [["wind", "storm"], ["cover"]],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_home_tx_flood_nuance",
+      "query": "My basement flooded. Will you pay for it?",
+      "claim_type": "home",
+      "region": "TX",
+      "expected_doc": "POLICY-HOME-TX",
+      "must_include": [],
+      "must_include_any": [["rising flood", "floodwater"], ["exclud", "not covered", "separate flood policy"]],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_auto_ca_fraud_investigation_rental",
+      "query": "My claim is under fraud investigation. Can I still get a rental car?",
+      "claim_type": "auto",
+      "region": "CA",
+      "expected_doc": "POLICY-AUTO-CA",
+      "must_include": ["fraud"],
+      "must_include_any": [["does not apply", "not apply", "no rental"]],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_health_ny_out_of_network_er",
+      "query": "I went to an out-of-network emergency room. Are you paying?",
+      "claim_type": "health",
+      "region": "NY",
+      "expected_doc": "POLICY-HEALTH-NY",
+      "must_include": [],
+      "must_include_any": [["emergency"], ["cover"]],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_auto_ca_late_45_days",
+      "query": "I reported the crash 45 days later in California. Am I too late?",
+      "claim_type": "auto",
+      "region": "CA",
+      "expected_doc": "POLICY-AUTO-CA",
+      "must_include": ["30"],
+      "must_include_any": [["written explanation", "explanation"]],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_health_ny_late_120_days",
+      "query": "I submitted my claim 120 days after the service date in New York. What happens?",
+      "claim_type": "health",
+      "region": "NY",
+      "expected_doc": "POLICY-HEALTH-NY",
+      "must_include": ["90"],
+      "must_include_any": [["late", "member statement", "explaining"]],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_home_tx_hail_deductible",
+      "query": "What deductible applies to a hail claim on my house?",
+      "claim_type": "home",
+      "region": "TX",
+      "expected_doc": "POLICY-HOME-TX",
+      "must_include": [],
+      "must_include_any": [["2%", "percentage-based"]],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_auto_ca_deadline_and_rental",
+      "query": "What is the deadline to report a claim and the rental cap in California?",
+      "claim_type": "auto",
+      "region": "CA",
+      "expected_doc": "POLICY-AUTO-CA",
+      "must_include": ["30"],
+      "must_include_any": [["1,500", "1500"]],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_health_ny_prior_auth_and_deadline",
+      "query": "Do I need prior authorization for an MRI, and how long do I have to submit the claim?",
+      "claim_type": "health",
+      "region": "NY",
+      "expected_doc": "POLICY-HEALTH-NY",
+      "must_include": ["prior authorization", "90"],
+      "must_include_any": [],
+      "must_not_include": []
+    },
+    {
+      "id": "hi_refusal_health_ca",
+      "query": "What is my deductible for an MRI?",
+      "claim_type": "health",
+      "region": "CA",
+      "expected_doc": null,
+      "must_include": [],
+      "must_include_any": [],
+      "must_not_include": [],
+      "should_refuse": true
+    },
+    {
+      "id": "hi_refusal_auto_ny",
+      "query": "What is the rental limit?",
+      "claim_type": "auto",
+      "region": "NY",
+      "expected_doc": null,
+      "must_include": [],
+      "must_include_any": [],
+      "must_not_include": [],
+      "should_refuse": true
+    },
+    {
+      "id": "hi_refusal_home_ca",
+      "query": "Is earthquake damage covered?",
+      "claim_type": "home",
+      "region": "CA",
+      "expected_doc": null,
+      "must_include": [],
+      "must_include_any": [],
+      "must_not_include": [],
+      "should_refuse": true
+    }
+  ]
+}

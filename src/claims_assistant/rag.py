@@ -71,8 +71,52 @@ _STOP = {
 }
 
 
+# Domain synonyms + a deliberately small stemmer. Applied to BOTH the index and
+# the query, so "flooded basement" can match "rising floodwaters". Without this,
+# BM25 scores zero and the assistant refuses a question it could have answered.
+_SYNONYMS = {
+    "floodwater": "flood", "floodwaters": "flood", "flooded": "flood",
+    "flooding": "flood", "floods": "flood",
+    "hire": "rental", "hired": "rental", "car": "vehicle", "cars": "vehicle",
+    "doctor": "provider", "physician": "provider",
+}
+
+
+def _stem(token: str) -> str:
+    if token in _SYNONYMS:
+        return _SYNONYMS[token]
+    base = token
+    if len(base) > 4 and base.endswith("ies"):
+        base = base[:-3] + "y"
+    elif len(base) > 5 and base.endswith("ing"):
+        base = base[:-3]
+    elif len(base) > 4 and base.endswith("ed"):
+        base = base[:-2]
+    elif len(base) > 4 and base.endswith("es"):
+        base = base[:-2]
+    elif len(base) > 3 and base.endswith("s") and not base.endswith("ss"):
+        base = base[:-1]
+    return _SYNONYMS.get(base, base)
+
+
 def _tokenize(text: str) -> list[str]:
-    return [t for t in _TOKEN.findall(text.lower()) if t not in _STOP]
+    return [_stem(t) for t in _TOKEN.findall(text.lower()) if t not in _STOP]
+
+
+_SPLIT_QUERY = re.compile(r"\?|;|\s+and\s+|,\s*(?:and\s+)?", re.I)
+
+
+def _sub_queries(question: str) -> list[str]:
+    """Split a compound question so each part retrieves its own section.
+
+    'Do I need prior authorization for an MRI, and how long do I have to submit
+    the claim?' must retrieve both Prior Authorization and Filing Deadline.
+    """
+    parts = [p.strip() for p in _SPLIT_QUERY.split(question) if p.strip()]
+    parts = [p for p in parts if len(_tokenize(p)) >= 2]
+    if len(parts) < 2:
+        return [question]
+    return [question] + parts
 
 
 class BM25Index:
@@ -148,8 +192,16 @@ class PolicyRAG:
         if not eligible:
             return []
 
-        bm25_ranked = [chunk for _, chunk in
-                       BM25Index(eligible).search(question, len(eligible))]
+        index = BM25Index(eligible)
+        rankings = [chunk for _, chunk in index.search(question, len(eligible))]
+        # Compound questions: retrieve for each part too, then fuse. Otherwise
+        # the second half of the question never reaches the prompt.
+        sub_rankings = []
+        for part in _sub_queries(question)[1:]:
+            sub_rankings.append([c for _, c in index.search(part, len(eligible))])
+        if sub_rankings:
+            rankings = reciprocal_rank_fusion([rankings] + sub_rankings)
+        bm25_ranked = rankings
 
         if (self.embeddings is not None and self.llm is not None
                 and self.embeddings.covers(eligible)):

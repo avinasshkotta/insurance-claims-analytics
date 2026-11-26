@@ -55,6 +55,8 @@ def main(argv: list[str] | None = None) -> int:
     p_eval = sub.add_parser("eval", help="run the golden-set evaluation harness")
     p_eval.add_argument("--live", action="store_true",
                         help="evaluate the real LLM answers (needs API key)")
+    p_eval.add_argument("--dataset", default=None,
+                        help="path to a case file (default: eval/golden_set.json)")
     p_eval.add_argument("--no-report", action="store_true",
                         help="do not write docs/eval_report.json")
 
@@ -75,7 +77,8 @@ def main(argv: list[str] | None = None) -> int:
             if not _require_key():
                 return 2
             llm = LLMClient()
-        report = run_eval(llm=llm, write_report=not args.no_report)
+        report = run_eval(llm=llm, write_report=not args.no_report,
+                          golden_path=Path(args.dataset) if args.dataset else None)
         print(format_report(report))
         return 0 if report["passed"] else 1
 
