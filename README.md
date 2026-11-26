@@ -54,9 +54,9 @@ A public link runs on your API key, so `DEMO_MODE=1` turns on three guardrails:
 | `MAX_OUTPUT_TOKENS` | `700` | Generation ceiling on every call, all modes |
 
 `GET /api/health` reports the live demo state; `/dashboard` shows quality, latency and spend.
-Deployment options: **Render free tier** (`render.yaml`, no ports needed), **local Docker +
-DuckDNS** (`deploy/local-demo/`), **AWS Lambda + Function URL** (`deploy/aws/`, ~$0 idle),
-**Cloud Run** (`deploy/cloudrun/`), or **Hugging Face Spaces** (PRO plan — `deploy/huggingface/`).
+Deployment options: **Azure Container Apps + GitHub Actions** (`deploy/azure/`, CI/CD on push),
+**Render free tier** (`render.yaml`), **local Docker + DuckDNS** (`deploy/local-demo/`),
+**AWS Lambda** (`deploy/aws/`), **Cloud Run** (`deploy/cloudrun/`), or **Hugging Face Spaces**.
 
 ## Quick start
 

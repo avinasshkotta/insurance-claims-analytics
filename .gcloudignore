@@ -1,0 +1,36 @@
+# Files NOT uploaded when running `gcloud run deploy --source .`
+# Without this, the upload includes frontend/node_modules and runtime logs.
+# Docker build inputs must stay included: data/ (claims, policies, embeddings), models/, prompts/, eval/.
+
+.git
+.gitignore
+.gcloudignore
+.env
+.env.example
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.ruff_cache
+
+frontend/node_modules
+frontend/dist
+
+data/uploads
+data/case_queue.json
+data/llm_usage.jsonl
+data/runs.jsonl
+
+docs/*.pdf
+docs/*.png
+docs/*.html
+docs/eval_report.json
+
+deploy/local-demo/tools
+deploy/local-demo/.env
+deploy/local-demo/.credentials.txt
+
+*.log
+*.db
