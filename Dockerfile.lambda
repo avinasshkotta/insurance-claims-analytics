@@ -1,0 +1,31 @@
+# Lambda container image for the claims console.
+# Build with:  docker build --platform linux/amd64 -f Dockerfile.lambda -t claims-console .
+
+# ---- web build (React + Vite) ----
+FROM node:22-alpine AS web
+WORKDIR /web
+COPY frontend/package*.json ./
+RUN npm ci --no-audit --no-fund
+COPY frontend/ .
+RUN npm run build
+
+# ---- Lambda runtime ----
+FROM public.ecr.aws/lambda/python:3.12
+
+COPY requirements.txt ${LAMBDA_TASK_ROOT}/
+RUN pip install --no-cache-dir -r ${LAMBDA_TASK_ROOT}/requirements.txt
+
+COPY src ${LAMBDA_TASK_ROOT}/src
+COPY prompts ${LAMBDA_TASK_ROOT}/prompts
+COPY data ${LAMBDA_TASK_ROOT}/data
+COPY eval ${LAMBDA_TASK_ROOT}/eval
+COPY models ${LAMBDA_TASK_ROOT}/models
+COPY lambda_handler.py ${LAMBDA_TASK_ROOT}/
+COPY --from=web /web/dist ${LAMBDA_TASK_ROOT}/frontend/dist
+
+# Read-only /var/task; runtime state goes to /tmp (see config.WRITE_DIR).
+ENV PYTHONPATH=${LAMBDA_TASK_ROOT}/src \
+    PYTHONDONTWRITEBYTECODE=1 \
+    WRITE_DIR=/tmp/data
+
+CMD ["lambda_handler.handler"]

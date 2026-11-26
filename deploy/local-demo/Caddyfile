@@ -1,0 +1,30 @@
+# Caddy terminates TLS for the DuckDNS name and proxies to the app.
+# Certificates are issued automatically over HTTP-01, which is why port 80 must be open.
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+	}
+
+	reverse_proxy app:8000 {
+		# Overwrite, not append: the app rate-limits by the first X-Forwarded-For
+		# entry, and a visitor-supplied value would let anyone bypass the limit.
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	# Optional: require a password for the whole demo.
+	# Generate a hash: docker run --rm caddy:2-alpine caddy hash-password --plaintext 'secret'
+	# basic_auth {
+	# 	demo $2a$14$REPLACE_WITH_HASH
+	# }
+
+	log {
+		output stdout
+		format console
+	}
+}

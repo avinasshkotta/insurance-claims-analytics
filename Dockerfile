@@ -25,4 +25,5 @@ RUN pip install --no-cache-dir -e . --no-deps
 COPY --from=web /web/dist ./frontend/dist
 
 EXPOSE 8000
-CMD ["uvicorn", "claims_assistant.api:app", "--host", "0.0.0.0", "--port", "8000"]
+# Honor $PORT so the same image runs locally (8000) and on Cloud Run (8080).
+CMD ["sh", "-c", "exec uvicorn claims_assistant.api:app --host 0.0.0.0 --port ${PORT:-8000}"]

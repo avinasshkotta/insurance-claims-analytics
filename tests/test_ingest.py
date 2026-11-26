@@ -138,6 +138,7 @@ def test_agent_handles_non_json():
 # ---------------------------------------------------------------- persistence
 def test_ingest_document_persists(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(config, "UPLOADS_DIR", tmp_path / "uploads")
     monkeypatch.setattr(config, "RUNS_PATH", tmp_path / "runs.jsonl")
     claims_file = tmp_path / "claims.json"
     claims_file.write_text("[]", encoding="utf-8")

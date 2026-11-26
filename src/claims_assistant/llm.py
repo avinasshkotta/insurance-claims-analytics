@@ -78,6 +78,7 @@ class LLMClient:
             messages=[{"role": "system", "content": system},
                       {"role": "user", "content": user}],
             temperature=0,
+            max_tokens=config.MAX_OUTPUT_TOKENS,
             **kwargs,
         )
         self._meter(kind, resp)
@@ -86,7 +87,8 @@ class LLMClient:
     def chat_tools(self, messages: list[dict], tools: list[dict]) -> dict:
         """One tool-calling turn. Returns {content, tool_calls:[{id,name,arguments}]}."""
         resp = self._client.chat.completions.create(
-            model=self.model, messages=messages, tools=tools, temperature=0)
+            model=self.model, messages=messages, tools=tools, temperature=0,
+            max_tokens=config.MAX_OUTPUT_TOKENS)
         self._meter("tools", resp)
         msg = resp.choices[0].message
         calls = []
@@ -123,6 +125,7 @@ class LLMClient:
             messages=[{"role": "system", "content": system},
                       {"role": "user", "content": content}],
             temperature=0,
+            max_tokens=config.MAX_OUTPUT_TOKENS,
         )
         self._meter(kind, resp)
         return (resp.choices[0].message.content or "").strip()

@@ -17,6 +17,7 @@ from .prompts import registry
 
 def record_run(kind: str, claim_ids: list[str], tool_log: list[dict],
                final: str, model: str | None = None,
+               latency_ms: float | None = None,
                path: Path | None = None) -> dict:
     entry = {
         "run_id": "run_" + uuid.uuid4().hex[:10],
@@ -30,6 +31,8 @@ def record_run(kind: str, claim_ids: list[str], tool_log: list[dict],
         "tool_errors": sum(1 for t in tool_log if not t.get("ok", True)),
         "final": final,
     }
+    if latency_ms is not None:
+        entry["latency_ms"] = round(float(latency_ms), 2)
     target = path or config.RUNS_PATH
     target.parent.mkdir(parents=True, exist_ok=True)
     with target.open("a", encoding="utf-8") as fh:

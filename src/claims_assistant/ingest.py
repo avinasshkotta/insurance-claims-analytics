@@ -363,7 +363,7 @@ def ingest_document(filename: str, data: bytes, llm, db, max_attempts: int = 3) 
     }
     db.add(claim)
 
-    uploads_dir = config.DATA_DIR / "uploads"
+    uploads_dir = config.UPLOADS_DIR
     uploads_dir.mkdir(parents=True, exist_ok=True)
     (uploads_dir / f"{claim['claim_id']}.json").write_text(
         json.dumps({"extraction": {k: v for k, v in extracted.items() if k != "text"},
