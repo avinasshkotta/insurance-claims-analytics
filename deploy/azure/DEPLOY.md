@@ -92,6 +92,7 @@ first Actions run replaces it. That is expected. Sequence:
 | Symptom | Cause |
 |---|---|
 | `AADSTS70021` / login fails | federated subject must be exactly `repo:OWNER/REPO:ref:refs/heads/main` |
+| `AADSTS700213` and the error shows `repo:owner@12345/repo@67890:ref:refs/heads/main` | GitHub now sends **immutable-ID subject claims**. Add a second credential using the exact subject from the error:<br>`az ad app federated-credential create --id <appId> --parameters '{"name":"github-main-immutable","issuer":"https://token.actions.githubusercontent.com","subject":"<subject from error>","audiences":["api://AzureADTokenExchange"]}'` |
 | `ErrImagePull` / `ImagePullBackOff` | GHCR package is private; make it public or add registry credentials |
 | Revision deploys but `/api/health` 503 | the app listens on 8000; `targetPort` must be 8000 |
 | `AuthorizationFailed` during deploy | service principal needs Contributor on the resource group |

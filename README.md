@@ -10,7 +10,11 @@ tested Python service with a React console, an evaluation harness, and a Docker 
 | 3 · AI Agent | Triage: status → deterministic risk → route flagged claims to a human | `agent.py` + `risk.py` |
 | 4 · MCP | Three least-privilege MCP servers behind one client interface | `mcp_*_server.py` |
 
-**Live demo:** `<ADD URL>` · **Quality & cost dashboard:** `<URL>/dashboard`
+**Live demo:** https://claims-console.proudgrass-320c667e.centralindia.azurecontainerapps.io
+**Quality & cost dashboard:** https://claims-console.proudgrass-320c667e.centralindia.azurecontainerapps.io/dashboard
+
+Deployed on Azure Container Apps via GitHub Actions; every push to `main` rebuilds and rolls a new revision.
+Cold start is ~5–10 s (scale-to-zero).
 
 ## Measured results
 
