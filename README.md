@@ -10,14 +10,53 @@ tested Python service with a React console, an evaluation harness, and a Docker 
 | 3 · AI Agent | Triage: status → deterministic risk → route flagged claims to a human | `agent.py` + `risk.py` |
 | 4 · MCP | Three least-privilege MCP servers behind one client interface | `mcp_*_server.py` |
 
-Specification: [`../case-studies/02-insurance-claims-four-layer-rctc.md`](../case-studies/02-insurance-claims-four-layer-rctc.md)
-Process report and interview pack: `docs/`
+**Live demo:** `<ADD URL>` · **Quality & cost dashboard:** `<URL>/dashboard`
+
+## Measured results
+
+Filled in from `/api/metrics/summary` after a real testing round. Keep the "before"
+column — the improvement is the story, not the final number.
+
+| Metric | Before | After | Source |
+|---|---|---|---|
+| Golden-set pass rate | _% | _% | `eval/golden_set.json` (9 cases) |
+| Top-1 retrieval accuracy | _% | _% | same |
+| Refusal accuracy | _% | _% | same |
+| p95 end-to-end latency | _ ms | _ ms | `data/runs.jsonl` |
+| Cost per request | $0.____ | $0.____ | `data/llm_usage.jsonl` |
+| Human override rate | _% | _% | `data/case_queue.json` |
+| External sessions | — | _ | demo guard logs |
+
+What changed between the columns: _(one or two lines — e.g. "moved the region filter
+ahead of ranking, which fixed 4 of 6 refusal failures")_.
+
+> Numbers come from synthetic claim data. The pipeline is the deliverable, not the labels.
+
+The specification, process report and interview pack live outside this repository, so
+presentation artifacts never ship with the code.
 
 ## Stack
 
 Python 3.10+ · OpenAI-compatible chat model (function calling) · hosted embeddings +
 local vector cache (BM25 fallback) · document ingestion with vision OCR (PDF/DOCX/XLSX/CSV/PNG) · MCP SDK ·
 FastAPI · React 18 + Vite 5 · Docker
+
+## Public demo mode
+
+A public link runs on your API key, so `DEMO_MODE=1` turns on three guardrails:
+
+| Variable | Default | Effect |
+|---|---|---|
+| `DEMO_MODE` | `0` | Enables all guards below |
+| `DEMO_RPM` | `12` | Requests per minute per visitor (429 + `Retry-After`) |
+| `DEMO_DAILY_USD` | `2.00` | Hard spend cap from the token ledger; blocks paid calls |
+| `DEMO_ALLOW_UPLOADS` | `0` | Uploads return 403 (keeps PII out of a public demo) |
+| `MAX_OUTPUT_TOKENS` | `700` | Generation ceiling on every call, all modes |
+
+`GET /api/health` reports the live demo state; `/dashboard` shows quality, latency and spend.
+Deployment options: **local Docker + DuckDNS/Caddy** (`deploy/local-demo/`, $0), **AWS Lambda
++ Function URL** (`deploy/aws/`, ~$0 idle), **Cloud Run** free tier (`deploy/cloudrun/`), or
+**Hugging Face Spaces** (Docker Spaces need a PRO plan since 2026 — `deploy/huggingface/`).
 
 ## Quick start
 
@@ -151,7 +190,7 @@ inside a different environment with `python -m claims_assistant.cli ml`.
 │   ├── prompts.py              # prompt registry (version + content digest)
 │   └── usage.py                # token/cost accounting (JSONL)
 ├── frontend/                   # React + Vite console
-└── tests/                      # 36 tests
+└── tests/                      # 110 tests
 ```
 
 ## Design notes
